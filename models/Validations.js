@@ -1,19 +1,8 @@
 const { check, validationResult } = require("express-validator");
 
 exports.validateUser = [
-  check("name")
-    .trim()
-    .not()
-    .isEmpty()
-    .withMessage("Name is required")
-    .isLength({ min: 3 })
-    .withMessage("Minimum 3 characters required!"),
-  check("email")
-    .trim()
-    .normalizeEmail()
-    .not()
-    .isEmpty()
-    .withMessage("Invalid email address!"),
+  check("name", "Name is required").trim().notEmpty().isLength({ min: 3 }),
+  check("email", "Invalid email address!").trim().normalizeEmail().notEmpty(),
   check("password", "password should be at least 6 chars").trim().isLength({
     min: 6,
   }),
@@ -21,6 +10,35 @@ exports.validateUser = [
     const errors = validationResult(req);
     if (!errors.isEmpty())
       return res.status(422).json({ errors: errors.array() });
+    next();
+  },
+];
+
+exports.vaildateLogin = [
+  check("email", "Invalid email address").trim().notEmpty(),
+  check("password", "Password is required").trim().notEmpty(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    next();
+  },
+];
+
+exports.validateCreateContact = [
+  check("name", "Name is required").trim().notEmpty(),
+  check("email", "Invalid email address").trim().isEmail(),
+  check("phone", "Phone is invalid")
+    .optional({ checkFalsy: true })
+    .isMobilePhone("en-CA"),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     next();
   },
 ];
