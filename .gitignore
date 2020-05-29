@@ -1,2 +1,14 @@
 node_modules
 config
+
+/ui/build
+
+DS_Store
+/ui/env.local
+/ui/env.test.local
+/ui/env.development.local
+/ui/env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
