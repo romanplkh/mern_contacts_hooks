@@ -1,3 +1,20 @@
+import axios from "axios";
+
+export const setAuthToken = () => {
+  const token = getTokenFromStorage();
+
+  if (token) {
+    axios.defaults.headers.common["x-auth-token"] = token;
+  } else {
+    delete axios.defaults.headers.common["x-auth-token"];
+  }
+};
+
+const getTokenFromStorage = () => {
+  const tkn = localStorage.getItem("token");
+  return tkn ? tkn : null;
+};
+
 export const funnelError = (error) => {
   let responseError = null;
   if (error.response.data.exception) {

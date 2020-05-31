@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/layout/Navbar/Navbar";
 import Alerts from "./components/layout/Alerts/Alerts";
@@ -10,8 +10,13 @@ import About from "./components/pages/About/About";
 import ContactSate from "./context/contact/ContactState";
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
+import { setAuthToken } from "./utils/utilsMethods";
 
 function App() {
+  useEffect(() => {
+    setAuthToken();
+  }, []);
+
   return (
     <AuthState>
       <ContactSate>

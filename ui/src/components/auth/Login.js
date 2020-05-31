@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import AlertContext from "../../context/alert/AlertContext";
+import AuthContext from "../../context/auth/AuthContext";
 
-const Register = () => {
+const Register = (props) => {
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -8,12 +10,36 @@ const Register = () => {
 
   const { email, password } = user;
 
+  const alertCTX = useContext(AlertContext);
+  const authCTX = useContext(AuthContext);
+
+  useEffect(() => {
+    if (authCTX.isAuth) {
+      props.history.replace("/");
+    }
+
+    if (authCTX.error != null) {
+      alertCTX.setAlert(authCTX.error, "danger");
+    }
+    //eslint-disable-next-line
+  }, [authCTX.error, authCTX.isAuth, props.history]);
+
   const onImputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
+  const isEmpty = (el) => {
+    return el === "";
+  };
+
   const onLogin = (e) => {
-    e.pereventDefault();
+    e.preventDefault();
+
+    if (!isEmpty(email) && !isEmpty(password)) {
+      authCTX.login({ email, password });
+    } else {
+      alertCTX.setAlert("All fields are required", "danger");
+    }
   };
 
   return (

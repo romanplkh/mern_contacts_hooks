@@ -3,7 +3,7 @@ import AuthReducer from "./AuthReducer";
 import AuthConext from "./AuthContext";
 import axios from "axios";
 import * as types from "../types";
-import { funnelError } from "../../utils/utilsMethods";
+import { funnelError, setAuthToken } from "../../utils/utilsMethods";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -28,16 +28,43 @@ const AuthtSate = (props) => {
 
   const register = async (data) => {
     clearErrors();
-
     try {
       const res = await axios.post(`${BASE_URL}/api/users`, data, config);
-      console.log(res);
-
-      dispatch({ type: types.REGISTER_SUCCESS, payload: res.data });
+      dispatch({ type: types.REGISTER_SUCCESS, payload: res.data.token });
+      loadUser();
     } catch (error) {
       let responseError = funnelError(error);
       dispatch({ type: types.REGISTER_FAIL, payload: responseError });
     }
+  };
+
+  const loadUser = async () => {
+    //load token into global headers
+    setAuthToken();
+    try {
+      const res = await axios.get("/api/auth");
+
+      dispatch({ type: types.USER_LOADED, payload: res.data.payload });
+    } catch (error) {
+      let responseError = funnelError(error);
+      dispatch({ type: types.AUTH_ERROR, payload: responseError });
+    }
+  };
+
+  const login = async (data) => {
+    clearErrors();
+    try {
+      const res = await axios.post(`${BASE_URL}/api/auth`, data, config);
+      dispatch({ type: types.LOGIN_SUCCESS, payload: res.data.token });
+      loadUser();
+    } catch (error) {
+      let responseError = funnelError(error);
+      dispatch({ type: types.LOGIN_FAIL, payload: responseError });
+    }
+  };
+
+  const logout = () => {
+    dispatch({ type: types.LOGOUT });
   };
 
   const clearErrors = () => {
@@ -52,6 +79,9 @@ const AuthtSate = (props) => {
         loading: state.loading,
         error: state.error,
         register,
+        loadUser,
+        login,
+        logout,
       }}
     >
       {props.children}

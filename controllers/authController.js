@@ -11,14 +11,14 @@ exports.login = async (req, res, next) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      return sendErrorMessage("Invalid email or password", res);
+      return sendErrorMessage(403, "Invalid email or password", res);
     }
 
     //Check password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return sendErrorMessage("Invalid email or password", res);
+      return sendErrorMessage(403, "Invalid email or password", res);
     }
 
     //Send token to user
@@ -47,6 +47,6 @@ exports.getAuthUser = async (req, res, next) => {
   }
 };
 
-function sendErrorMessage(msg, res) {
-  return res.status(400).json({ msg });
+function sendErrorMessage(code, msg, res) {
+  return res.status(code).json({ msg });
 }
