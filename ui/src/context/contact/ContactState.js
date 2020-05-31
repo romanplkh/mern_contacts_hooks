@@ -1,5 +1,4 @@
 import React, { useReducer } from "react";
-import uuid from "uuid";
 import ContactContext from "./ContactContext";
 import ContactReducer from "./ContactReducer";
 import * as types from "../types";
@@ -7,22 +6,22 @@ import * as types from "../types";
 const mockContacts = [
   {
     id: 1,
-    name: "Test 1",
+    name: "John Doe",
     email: "email@email.com",
     phone: "506-962-2222",
     type: "personal",
   },
   {
     id: 2,
-    name: "Test 2",
-    email: "test@email.com",
+    name: "Sam Smith",
+    email: "sam@yahoo.com",
     phone: "506-962-7777",
     type: "professional",
   },
   {
     id: 3,
-    name: "Test 3",
-    email: "someEmail@email.com",
+    name: "Rachel Salinson",
+    email: "rachel@hotmail.com",
     phone: "506-962-1515",
     type: "personal",
   },

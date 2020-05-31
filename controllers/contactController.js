@@ -106,11 +106,10 @@ exports.deleteContact = async (req, res, next) => {
 
     await Contact.findByIdAndRemove(id);
 
-    res.status(200).json({ payload: null, msg: "Contact Deleted" });
+    res.status(200).json({ msg: "Contact Deleted" });
   } catch (error) {
     console.log(error.message);
     res.status(500).send({
-      payload: null,
       exception: "Something bad happened. Cannot process request",
     });
   }

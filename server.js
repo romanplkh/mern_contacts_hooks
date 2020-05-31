@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 5000;
 const dbConnect = require("./config/db");
+const cors = require("cors");
 
 //CONNECT DB
 dbConnect();
@@ -14,6 +15,8 @@ app.use(
     extended: false,
   })
 );
+
+app.use(cors({ origin: "http://localhost:3000" }));
 
 //ROUTES
 app.use("/api/users", require("./routes/users"));

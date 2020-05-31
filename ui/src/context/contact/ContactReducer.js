@@ -12,7 +12,7 @@ const filterArrayHandler = (conts, payload, filterValue) => {
 };
 
 const addContact = (state, action) => {
-  return updateObject(state, { contacts: action.payload });
+  return updateObject(state, { contacts: [...state.contacts, action.payload] });
 };
 
 const updateContact = (state, action) => {
@@ -41,14 +41,18 @@ const updateCurrent = (state, action) => {
 
 const filterContacts = (state, action) => {
   let newContacts = [...state.contacts];
-  newContacts = newContacts.filter((ct) => {
-    return (
-      ct.name.toLowerCase().includes(action.payload.toLowerCase()) ||
-      ct.email.toLowerCase().includes(action.payload.toLowerCase())
-    );
-  });
 
-  return updateObject(state, { filtered: newContacts });
+  if (newContacts.length > 0) {
+    newContacts = newContacts.filter((ct) => {
+      return (
+        ct.name.toLowerCase().includes(action.payload.toLowerCase()) ||
+        ct.email.toLowerCase().includes(action.payload.toLowerCase())
+      );
+    });
+    return updateObject(state, { filtered: newContacts });
+  }
+
+  return state;
 };
 
 const clearFilter = (state, action) => {
