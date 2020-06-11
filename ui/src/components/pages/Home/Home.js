@@ -12,7 +12,9 @@ const Home = (props) => {
       props.history.replace("/login");
     }
 
-    authCTX.loadUser();
+    if (authCTX.token) {
+      authCTX.loadUser();
+    }
 
     //eslint-disable-next-line
   }, [authCTX.isAuth]);

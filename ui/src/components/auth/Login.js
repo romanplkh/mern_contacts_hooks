@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import AlertContext from "../../context/alert/AlertContext";
 import AuthContext from "../../context/auth/AuthContext";
 
-const Register = (props) => {
+const Login = (props) => {
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -18,12 +18,13 @@ const Register = (props) => {
       props.history.replace("/");
     }
 
-    if (authCTX.error != null) {
+    if (authCTX.error != null && email !== "" && password !== "") {
       alertCTX.setAlert(authCTX.error, "danger");
     }
     //eslint-disable-next-line
   }, [authCTX.error, authCTX.isAuth, props.history]);
 
+  
   const onImputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
@@ -76,4 +77,4 @@ const Register = (props) => {
   );
 };
 
-export default Register;
+export default Login;

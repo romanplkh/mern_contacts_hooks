@@ -29,6 +29,7 @@ const removeToken = (state, error) => {
     loading: false,
     isAuth: false,
     user: null,
+    token: null,
   };
 };
 
